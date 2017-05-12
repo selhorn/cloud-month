@@ -1,5 +1,4 @@
- param (
-    [string]$dbserver,
+ param (    
     [securestring]$password,
     [string]$username,
     [string]$zipfile
@@ -28,5 +27,9 @@ if ($serverType -eq $True) {
 }
 else {
     ## Then we are a webserver
-    Unzip "C:\a.zip" "C:\inetpub\wwwroot\"
+    Write-Output "Installing the web-webserver"
+    add-windowsfeature web-webserver -includeallsubfeature -logpath $env:temp\webserver_addrole.log
+    Write-Output "Installing web-mgmt-tools"
+    add-windowsfeature web-mgmt-tools -includeallsubfeature -logpath $env:temp\mgmttools_addrole.log
+    Unzip "C:\Users\Administrator\Downloads\webpage.zip" "C:\inetpub\wwwroot\"
 }
