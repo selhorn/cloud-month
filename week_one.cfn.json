@@ -441,6 +441,9 @@
                                         ]
                                     ]
                                 }
+                            },
+                            "C:\\Users\\Administrator\\Downloads\\webpage.zip": {
+                                "source": "https://raw.githubusercontent.com/tstanley93/cloud-month/master/webpage.zip"
                             }
                         },
                         "commands": {
