@@ -1,7 +1,6 @@
  param (    
     [securestring]$password,
-    [string]$username,
-    [string]$zipfile
+    [string]$username
  )
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem

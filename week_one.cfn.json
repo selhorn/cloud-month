@@ -418,26 +418,40 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "echo \"Installing web-webserver\"\n",
-                                            "add-windowsfeature web-webserver -includeallsubfeature -logpath $env:temp\\webserver_addrole.log\n",
-                                            "echo \"Installing web-mgmt-tools\"\n",
-                                            "add-windowsfeature web-mgmt-tools -includeallsubfeature -logpath $env:temp\\mgmttools_addrole.log\n",
-                                            "echo \"This is the first Windows IIS Server ",
-                                            {
-                                                "Ref": "WindowsName1"
-                                            },
-                                            "\" >> C:\\inetpub\\wwwroot\\index.html\n",
-                                            "$pass = ConvertTo-SecureString \"",
-                                            {
-                                                "Ref": "adminPassword"
-                                            },
-                                            "\" -AsPlainText -Force\n",
-                                            "New-LocalUser -Name \"tstanley\" -Password $pass -PasswordNeverExpires\n",
-                                            "Add-LocalGroupMember -Group \"Administrators\" -Member \"",
-                                            {
-                                                "Ref": "adminUsername"
-                                            },
-                                            "\"\n"
+                                            "param (\n",    
+                                            "  [securestring]$password,\n",
+                                            "   [string]$username,\n",
+                                            ")\n",
+                                            "\n",
+                                            "Add-Type -AssemblyName System.IO.Compression.FileSystem\n",
+                                            "\n",
+                                            "##  Create user and add to Administrators group\n",
+                                            "$pass = ConvertTo-SecureString $password -AsPlainText -Force\n",
+                                            "New-LocalUser -Name $username -Password $pass -PasswordNeverExpires\n",
+                                            "Add-LocalGroupMember -Group \"Administrators\" -Member $username\n",
+                                            "\n",
+                                            "## Functions\n",
+                                            "function Unzip\n",
+                                            "{\n",
+                                            "    param([string]$zipfile, [string]$outpath)\n",
+                                            "\n",
+                                            "    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)\n",
+                                            "}\n",
+                                            "\n",
+                                            "##  Check if we are the DB server or are a webserver ...\n",
+                                            "$serverType = $(Test-Path C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\110\\Tools\\Binn\\SQLCMD.EXE)\n",
+                                            "\n",
+                                            "if ($serverType -eq $True) {\n",
+                                            "    ## Then we are the database server\n",
+                                            "}\n",
+                                            "else {\n",
+                                            "    ## Then we are a webserver\n",
+                                            "    Write-Output \"Installing the web-webserver\"\n",
+                                            "    add-windowsfeature web-webserver -includeallsubfeature -logpath $env:temp\\webserver_addrole.log\n",
+                                            "    Write-Output \"Installing web-mgmt-tools\"\n",
+                                            "    add-windowsfeature web-mgmt-tools -includeallsubfeature -logpath $env:temp\\mgmttools_addrole.log\n",
+                                            "    Unzip \"C:\\Users\\Administrator\\Downloads\\webpage.zip\" \"C:\\inetpub\\wwwroot\\\"\n",
+                                            "}\n"
                                         ]
                                     ]
                                 }
@@ -448,7 +462,17 @@
                         },
                         "commands": {
                             "b-configure": {
-                                "command": "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1"
+                                "command": {
+                                    "Fn::Join": [
+                                        " ",
+                                        [
+                                            "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
+                                            { "Ref": "adminUsername" },
+                                            { "Ref": "adminPassword"},
+                                            "\n"
+                                        ]
+                                    ]
+                                }
                             }
                         }
                     }
@@ -523,35 +547,58 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "echo \"Installing web-webserver\"\n",
-                                            "add-windowsfeature web-webserver -includeallsubfeature -logpath $env:temp\\webserver_addrole.log\n",
-                                            "echo \"Installing web-mgmt-tools\"\n",
-                                            "add-windowsfeature web-mgmt-tools -includeallsubfeature -logpath $env:temp\\mgmttools_addrole.log\n",
-                                            "echo \"This is the first Windows IIS Server ",
-                                            {
-                                                "Ref": "WindowsName2"
-                                            },
-                                            "\" >> C:\\inetpub\\wwwroot\\index.html\n",
-                                            "$pass = ConvertTo-SecureString \"",
-                                            {
-                                                "Ref": "adminPassword"
-                                            },
-                                            "\" -AsPlainText -Force\n",
-                                            "New-LocalUser -Name \"tstanley\" -Password $pass -PasswordNeverExpires\n",
-                                            "Add-LocalGroupMember -Group \"Administrators\" -Member \"",
-                                            {
-                                                "Ref": "adminUsername"
-                                            },
-                                            "\"\n"
+                                            "param (\n",    
+                                            "  [securestring]$password,\n",
+                                            "   [string]$username,\n",
+                                            ")\n",
+                                            "\n",
+                                            "Add-Type -AssemblyName System.IO.Compression.FileSystem\n",
+                                            "\n",
+                                            "##  Create user and add to Administrators group\n",
+                                            "$pass = ConvertTo-SecureString $password -AsPlainText -Force\n",
+                                            "New-LocalUser -Name $username -Password $pass -PasswordNeverExpires\n",
+                                            "Add-LocalGroupMember -Group \"Administrators\" -Member $username\n",
+                                            "\n",
+                                            "## Functions\n",
+                                            "function Unzip\n",
+                                            "{\n",
+                                            "    param([string]$zipfile, [string]$outpath)\n",
+                                            "\n",
+                                            "    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)\n",
+                                            "}\n",
+                                            "\n",
+                                            "##  Check if we are the DB server or are a webserver ...\n",
+                                            "$serverType = $(Test-Path C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\110\\Tools\\Binn\\SQLCMD.EXE)\n",
+                                            "\n",
+                                            "if ($serverType -eq $True) {\n",
+                                            "    ## Then we are the database server\n",
+                                            "}\n",
+                                            "else {\n",
+                                            "    ## Then we are a webserver\n",
+                                            "    Write-Output \"Installing the web-webserver\"\n",
+                                            "    add-windowsfeature web-webserver -includeallsubfeature -logpath $env:temp\\webserver_addrole.log\n",
+                                            "    Write-Output \"Installing web-mgmt-tools\"\n",
+                                            "    add-windowsfeature web-mgmt-tools -includeallsubfeature -logpath $env:temp\\mgmttools_addrole.log\n",
+                                            "    Unzip \"C:\\Users\\Administrator\\Downloads\\webpage.zip\" \"C:\\inetpub\\wwwroot\\\"\n",
+                                            "}\n"
                                         ]
                                     ]
                                 }
+                            },
+                            "C:\\Users\\Administrator\\Downloads\\webpage.zip": {
+                                "source": "https://raw.githubusercontent.com/tstanley93/cloud-month/master/webpage.zip"
                             }
                         },
-                        "commands": {
-                            "b-configure": {
-                                "command": "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1"
-                            }
+                        "command": {
+                            "Fn::Join": [
+                                " ",
+                                [
+                                    "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
+                                    { "Ref": "adminUsername" },
+                                    { "Ref": "adminPassword"},
+                                    "\n"
+                                ]
+                            ]
                         }
                     }
                 }
@@ -625,35 +672,58 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "echo \"Installing web-webserver\"\n",
-                                            "add-windowsfeature web-webserver -includeallsubfeature -logpath $env:temp\\webserver_addrole.log\n",
-                                            "echo \"Installing web-mgmt-tools\"\n",
-                                            "add-windowsfeature web-mgmt-tools -includeallsubfeature -logpath $env:temp\\mgmttools_addrole.log\n",
-                                            "echo \"This is the first Windows IIS Server ",
-                                            {
-                                                "Ref": "WindowsName3"
-                                            },
-                                            "\" >> C:\\inetpub\\wwwroot\\index.html\n",
-                                            "$pass = ConvertTo-SecureString \"",
-                                            {
-                                                "Ref": "adminPassword"
-                                            },
-                                            "\" -AsPlainText -Force\n",
-                                            "New-LocalUser -Name \"tstanley\" -Password $pass -PasswordNeverExpires\n",
-                                            "Add-LocalGroupMember -Group \"Administrators\" -Member \"",
-                                            {
-                                                "Ref": "adminUsername"
-                                            },
-                                            "\"\n"
+                                            "param (\n",    
+                                            "  [securestring]$password,\n",
+                                            "   [string]$username,\n",
+                                            ")\n",
+                                            "\n",
+                                            "Add-Type -AssemblyName System.IO.Compression.FileSystem\n",
+                                            "\n",
+                                            "##  Create user and add to Administrators group\n",
+                                            "$pass = ConvertTo-SecureString $password -AsPlainText -Force\n",
+                                            "New-LocalUser -Name $username -Password $pass -PasswordNeverExpires\n",
+                                            "Add-LocalGroupMember -Group \"Administrators\" -Member $username\n",
+                                            "\n",
+                                            "## Functions\n",
+                                            "function Unzip\n",
+                                            "{\n",
+                                            "    param([string]$zipfile, [string]$outpath)\n",
+                                            "\n",
+                                            "    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)\n",
+                                            "}\n",
+                                            "\n",
+                                            "##  Check if we are the DB server or are a webserver ...\n",
+                                            "$serverType = $(Test-Path C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\110\\Tools\\Binn\\SQLCMD.EXE)\n",
+                                            "\n",
+                                            "if ($serverType -eq $True) {\n",
+                                            "    ## Then we are the database server\n",
+                                            "}\n",
+                                            "else {\n",
+                                            "    ## Then we are a webserver\n",
+                                            "    Write-Output \"Installing the web-webserver\"\n",
+                                            "    add-windowsfeature web-webserver -includeallsubfeature -logpath $env:temp\\webserver_addrole.log\n",
+                                            "    Write-Output \"Installing web-mgmt-tools\"\n",
+                                            "    add-windowsfeature web-mgmt-tools -includeallsubfeature -logpath $env:temp\\mgmttools_addrole.log\n",
+                                            "    Unzip \"C:\\Users\\Administrator\\Downloads\\webpage.zip\" \"C:\\inetpub\\wwwroot\\\"\n",
+                                            "}\n"
                                         ]
                                     ]
                                 }
+                            },
+                            "C:\\Users\\Administrator\\Downloads\\webpage.zip": {
+                                "source": "https://raw.githubusercontent.com/tstanley93/cloud-month/master/webpage.zip"
                             }
                         },
-                        "commands": {
-                            "b-configure": {
-                                "command": "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1"
-                            }
+                        "command": {
+                            "Fn::Join": [
+                                " ",
+                                [
+                                    "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
+                                    { "Ref": "adminUsername" },
+                                    { "Ref": "adminPassword"},
+                                    "\n"
+                                ]
+                            ]
                         }
                     }
                 }
@@ -722,31 +792,55 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "$pass = ConvertTo-SecureString \"",
-                                            {
-                                                "Ref": "adminPassword"
-                                            },
-                                            "\" -AsPlainText -Force\n",
-                                            "New-LocalUser -Name \"",
-                                            {
-                                                "Ref": "adminUsername"
-                                            },
-                                            "\" -Password $pass -PasswordNeverExpires\n",
-                                            "Add-LocalGroupMember -Group \"Administrators\" -Member \"",
-                                            {
-                                                "Ref": "adminUsername"
-                                            },
-                                            "\"\n",
-                                            ""
+                                            "param (\n",    
+                                            "  [securestring]$password,\n",
+                                            "   [string]$username,\n",
+                                            ")\n",
+                                            "\n",
+                                            "Add-Type -AssemblyName System.IO.Compression.FileSystem\n",
+                                            "\n",
+                                            "##  Create user and add to Administrators group\n",
+                                            "$pass = ConvertTo-SecureString $password -AsPlainText -Force\n",
+                                            "New-LocalUser -Name $username -Password $pass -PasswordNeverExpires\n",
+                                            "Add-LocalGroupMember -Group \"Administrators\" -Member $username\n",
+                                            "\n",
+                                            "## Functions\n",
+                                            "function Unzip\n",
+                                            "{\n",
+                                            "    param([string]$zipfile, [string]$outpath)\n",
+                                            "\n",
+                                            "    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)\n",
+                                            "}\n",
+                                            "\n",
+                                            "##  Check if we are the DB server or are a webserver ...\n",
+                                            "$serverType = $(Test-Path C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\110\\Tools\\Binn\\SQLCMD.EXE)\n",
+                                            "\n",
+                                            "if ($serverType -eq $True) {\n",
+                                            "    ## Then we are the database server\n",
+                                            "}\n",
+                                            "else {\n",
+                                            "    ## Then we are a webserver\n",
+                                            "    Write-Output \"Installing the web-webserver\"\n",
+                                            "    add-windowsfeature web-webserver -includeallsubfeature -logpath $env:temp\\webserver_addrole.log\n",
+                                            "    Write-Output \"Installing web-mgmt-tools\"\n",
+                                            "    add-windowsfeature web-mgmt-tools -includeallsubfeature -logpath $env:temp\\mgmttools_addrole.log\n",
+                                            "    Unzip \"C:\\Users\\Administrator\\Downloads\\webpage.zip\" \"C:\\inetpub\\wwwroot\\\"\n",
+                                            "}\n"
                                         ]
                                     ]
                                 }
                             }
                         },
-                        "commands": {
-                            "b-configure": {
-                                "command": "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1"
-                            }
+                        "command": {
+                            "Fn::Join": [
+                                " ",
+                                [
+                                    "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
+                                    { "Ref": "adminUsername" },
+                                    { "Ref": "adminPassword"},
+                                    "\n"
+                                ]
+                            ]
                         }
                     }
                 }
