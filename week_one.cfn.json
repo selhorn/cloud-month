@@ -76,7 +76,7 @@
         "WindowsInstanceType": {
             "Description": "EC2 instance type",
             "Type": "String",
-            "Default": "t2.small",
+            "Default": "m4.xlarge",
             "AllowedValues": [
                 "m4.xlarge",
                 "m4.2xlarge",
@@ -461,8 +461,8 @@
                                         " ",
                                         [
                                             "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
-                                            { "Ref": "adminUsername" },
-                                            { "Ref": "adminPassword"},
+                                            { "Ref": "adminPassword" },
+                                            { "Ref": "adminUsername"},
                                             "\n"
                                         ]
                                     ]
@@ -588,8 +588,8 @@
                                 " ",
                                 [
                                     "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
-                                    { "Ref": "adminUsername" },
-                                    { "Ref": "adminPassword"},
+                                    { "Ref": "adminPassword" },
+                                    { "Ref": "adminUsername"},
                                     "\n"
                                 ]
                             ]
@@ -713,8 +713,8 @@
                                 " ",
                                 [
                                     "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
-                                    { "Ref": "adminUsername" },
-                                    { "Ref": "adminPassword"},
+                                    { "Ref": "adminPassword" },
+                                    { "Ref": "adminUsername"},
                                     "\n"
                                 ]
                             ]
@@ -830,8 +830,8 @@
                                 " ",
                                 [
                                     "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
-                                    { "Ref": "adminUsername" },
-                                    { "Ref": "adminPassword"},
+                                    { "Ref": "adminPassword" },
+                                    { "Ref": "adminUsername"},
                                     "\n"
                                 ]
                             ]
