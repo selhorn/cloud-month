@@ -6,8 +6,8 @@
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
 ##  Create user and add to Administrators group
-$pass = ConvertTo-SecureString $password -AsPlainText -Force
-New-LocalUser -Name $username -Password $pass -PasswordNeverExpires
+## $pass = ConvertTo-SecureString $password -AsPlainText -Force
+New-LocalUser -Name $username -Password $pasword -PasswordNeverExpires
 Add-LocalGroupMember -Group \"Administrators\" -Member $username
 
 ## Functions
