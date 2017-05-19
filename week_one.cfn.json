@@ -493,6 +493,14 @@
                         ]
                     }
                 ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "WindowsInstance1"
+                        }
+                    }
+                ],
                 "UserData": {
                     "Fn::Base64": {
                         "Fn::Join": [
@@ -620,6 +628,14 @@
                             "WindowsSecurityGroup",
                             "GroupId"
                         ]
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "WindowsInstance2"
+                        }
                     }
                 ],
                 "UserData": {
@@ -751,6 +767,14 @@
                         ]
                     }
                 ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "WindowsInstance3"
+                        }
+                    }
+                ],
                 "UserData": {
                     "Fn::Base64": {
                         "Fn::Join": [
@@ -866,6 +890,14 @@
                             "WindowsSecurityGroup",
                             "GroupId"
                         ]
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "DBName"
+                        }
                     }
                 ],
                 "UserData": {
