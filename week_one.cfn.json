@@ -857,16 +857,20 @@
                                 }
                             }
                         },
-                        "command": {
-                            "Fn::Join": [
-                                " ",
-                                [
-                                    "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
-                                    { "Ref": "adminPassword" },
-                                    { "Ref": "adminUsername"},
-                                    "\n"
-                                ]
-                            ]
+                        "commands": {
+                            "b-configure": {
+                                "command": {
+                                    "Fn::Join": [
+                                        " ",
+                                        [
+                                            "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
+                                            { "Ref": "adminPassword" },
+                                            { "Ref": "adminUsername"},
+                                            "\n"
+                                        ]
+                                    ]
+                                }
+                            }
                         }
                     }
                 }
