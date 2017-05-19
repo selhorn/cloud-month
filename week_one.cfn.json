@@ -583,16 +583,20 @@
                                 "source": "https://raw.githubusercontent.com/tstanley93/cloud-month/master/webpage.zip"
                             }
                         },
-                        "command": {
-                            "Fn::Join": [
-                                " ",
-                                [
-                                    "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
-                                    { "Ref": "adminPassword" },
-                                    { "Ref": "adminUsername"},
-                                    "\n"
-                                ]
-                            ]
+                        "commands": {
+                            "b-configure": {
+                                "command": {
+                                    "Fn::Join": [
+                                        " ",
+                                        [
+                                            "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
+                                            { "Ref": "adminPassword" },
+                                            { "Ref": "adminUsername"},
+                                            "\n"
+                                        ]
+                                    ]
+                                }
+                            }
                         }
                     }
                 }
@@ -708,16 +712,20 @@
                                 "source": "https://raw.githubusercontent.com/tstanley93/cloud-month/master/webpage.zip"
                             }
                         },
-                        "command": {
-                            "Fn::Join": [
-                                " ",
-                                [
-                                    "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
-                                    { "Ref": "adminPassword" },
-                                    { "Ref": "adminUsername"},
-                                    "\n"
-                                ]
-                            ]
+                        "commands": {
+                            "b-configure": {
+                                "command": {
+                                    "Fn::Join": [
+                                        " ",
+                                        [
+                                            "powershell.exe -ExecutionPolicy unrestricted C:\\Users\\Administrator\\Downloads\\firstrun.ps1",
+                                            { "Ref": "adminPassword" },
+                                            { "Ref": "adminUsername"},
+                                            "\n"
+                                        ]
+                                    ]
+                                }
+                            }
                         }
                     }
                 }
