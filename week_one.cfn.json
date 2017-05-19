@@ -497,7 +497,7 @@
                     {
                         "Key": "Name",
                         "Value": {
-                            "Ref": "WindowsInstance1"
+                            "Ref": "WindowsName1"
                         }
                     }
                 ],
@@ -634,7 +634,7 @@
                     {
                         "Key": "Name",
                         "Value": {
-                            "Ref": "WindowsInstance2"
+                            "Ref": "WindowsName2"
                         }
                     }
                 ],
@@ -771,7 +771,7 @@
                     {
                         "Key": "Name",
                         "Value": {
-                            "Ref": "WindowsInstance3"
+                            "Ref": "WindowsName3"
                         }
                     }
                 ],
